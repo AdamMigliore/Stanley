@@ -30,6 +30,18 @@ const stock: Command = {
       });
     }
 
+    //  Data for close
+    const data = datasetArr.reduce(
+      (acc: number[], curr) => [...acc, curr["4. close"]],
+      []
+    );
+
+    //  Data of each closing date
+    const labels = datasetArr.reduce(
+      (acc: string[], curr) => [...acc, curr.date],
+      []
+    );
+
     //  Math
     const dailyChange = round(
       ((datasetArr[0]["4. close"] - datasetArr[0]["1. open"]) /
@@ -49,20 +61,26 @@ const stock: Command = {
     const configuration = {
       type: "line",
       data: {
-        labels: [],
+        labels,
         datasets: [
           {
-            label: `${ticker} as of ${dataset["Meta Data"]["3. Last Refreshed"]}`,
-            data: [12, 19, 3, 5, 2, 3],
+            label: `${ticker} over the last 100 days`,
+            data,
             borderColor: "#34eb98",
-            borderWidth: 1,
-            pointBackgroundColor: "#ffff",
-            pointHitRadius: 5,
+            backgroundColor: "#34eb98",
+            fill: false,
+            lineTension: 0,
+            pointRadius: 0,
           },
         ],
       },
       options: {
+        title: {
+          display: true,
+          text: `${ticker} as of ${dataset["Meta Data"]["3. Last Refreshed"]}`,
+        },
         scales: {
+          xAxes: [{ display: false }],
           yAxes: [
             {
               ticks: {
@@ -81,14 +99,14 @@ const stock: Command = {
 
     //  Embed
     const embed = new Discord.MessageEmbed()
-      .setColor("#03b5fc")
+      .setColor("#34eb98")
       .setTitle(`${ticker} as of ${dataset["Meta Data"]["3. Last Refreshed"]}`)
       .addFields(
         { name: "Last Open", value: `${datasetArr[0]["1. open"]}$` },
         { name: "Last Close", value: `${datasetArr[0]["4. close"]}$` },
         { name: "Last Change", value: `${dailyChange}%` }
       )
-      .setURL(`https://finance.yahoo.com/${ticker}`)
+      .setURL(`https://finance.yahoo.com/quote/${ticker}`)
       .attachFiles([pathToImage])
       .setImage(`attachment://${ticker}.png`);
     await message.channel.send(embed);
