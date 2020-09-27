@@ -47,30 +47,17 @@ const stock: Command = {
       `${ticker}.png`
     );
     const configuration = {
-      type: "bar",
+      type: "line",
       data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: [],
         datasets: [
           {
-            label: "# of Votes",
+            label: `${ticker} as of ${dataset["Meta Data"]["3. Last Refreshed"]}`,
             data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255,99,132,1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
+            borderColor: "#34eb98",
             borderWidth: 1,
+            pointBackgroundColor: "#ffff",
+            pointHitRadius: 5,
           },
         ],
       },
@@ -79,8 +66,11 @@ const stock: Command = {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true,
-                callback: (value: any) => "$" + value,
+                fontColor: "#ffff",
+                // Include a dollar sign in the ticks
+                callback: function (value: any) {
+                  return "$" + value;
+                },
               },
             },
           ],
