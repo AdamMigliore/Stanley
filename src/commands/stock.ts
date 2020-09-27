@@ -6,6 +6,7 @@ import path from "path";
 import { chartToPng } from "../functions/chartToPng";
 import { height, width } from "../config/canvas";
 import alphaVantage from "../functions/alphaVantage";
+import fs from "fs";
 
 const stock: Command = {
   name: "stock",
@@ -101,6 +102,13 @@ const stock: Command = {
       .attachFiles([pathToImage])
       .setImage(`attachment://${ticker}.png`);
     await message.channel.send(embed);
+
+    //  Clear charts
+    try {
+      fs.unlinkSync(pathToImage);
+    } catch (err) {
+      console.log(err);
+    }
   },
 };
 
