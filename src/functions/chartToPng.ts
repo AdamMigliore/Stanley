@@ -10,7 +10,7 @@ const chartToPng = async (
   const canvasRenderService = new CanvasRenderService(
     width,
     height,
-    (ChartJS) => {}
+    (ChartJS: any) => {}
   );
 
   //  Create PNG
